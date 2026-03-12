@@ -14,7 +14,7 @@ class ChatsController < ApplicationController
 
   def show
     @chat = Chat.find(params[:id])
-    @message = Message.new # -----> para o formulário da IA depois
+    @message = Message.new # ------> para o formulário da IA depois
   end
 
   def destroy

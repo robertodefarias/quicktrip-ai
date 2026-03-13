@@ -41,6 +41,10 @@ class MessagesController < ApplicationController
     end
   end
 
+  def trip_context
+    "The user is asking about #{@trip.city}. Context: #{@trip.context}"
+  end
+
   private
 
   def message_params

@@ -7,11 +7,49 @@
 
   <div class="mt-4">
     <% if user_signed_in? %>
+
       <%= link_to "Create Trip", new_trip_path, class: "btn btn-primary btn-lg me-2" %>
       <%= link_to "My Trips", trips_path, class: "btn btn-outline-dark btn-lg" %>
+
+      <div class="row mt-5">
+
+        <% @cities.each do |city| %>
+
+          <div class="col-md-4 mb-4">
+
+            <div class="card shadow-sm h-100">
+              <img src="https://source.unsplash.com/600x400/?<%= city.city %>" class="card-img-top">
+
+              <div class="card-body">
+
+                <h5 class="card-title">
+                  <%= city.city %>
+                </h5>
+
+                <p class="card-text">
+                  <%= truncate(city.content, length: 100) %>
+                </p>
+
+                <%= button_to "Explore",
+                    chats_path(chat: { trip_id: city.id }),
+                    method: :post,
+                    class: "btn btn-primary" %>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        <% end %>
+
+      </div>
+
     <% else %>
+
       <%= link_to "Sign Up", new_user_registration_path, class: "btn btn-primary btn-lg me-2" %>
       <%= link_to "Login", new_user_session_path, class: "btn btn-outline-dark btn-lg" %>
+
     <% end %>
   </div>
 </div>

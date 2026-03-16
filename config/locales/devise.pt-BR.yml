@@ -1,0 +1,12 @@
+pt-BR:
+  devise:
+    registrations:
+      signed_up: "Bem-vindo! Você realizou seu cadastro com sucesso."
+      user:
+        signed_up: "Bem-vindo! Sua conta na Quick foi criada com sucesso."
+    sessions:
+      signed_in: "Login efetuado com sucesso. Vamos planejar?"
+      signed_out: "Logout efetuado com sucesso. Até logo!"
+    failure:
+      invalid: "%{authentication_keys} ou senha inválidos."
+      not_found_in_database: "%{authentication_keys} ou senha inválidos."

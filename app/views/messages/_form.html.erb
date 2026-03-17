@@ -2,7 +2,7 @@
   html: {
     data: {
       controller: "chat-form",
-      action: "turbo:submit-end->chat-form#reset"
+      action: "submit->chat-form#prepareForSubmit turbo:submit-end->chat-form#reset"
     }
   } do |f|
 %>

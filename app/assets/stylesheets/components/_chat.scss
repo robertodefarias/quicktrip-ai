@@ -4,6 +4,7 @@
   margin: auto;
   max-height: 70vh;
   overflow-y: auto;
+  max-width: 700px;
 }
 
 .user-message {
@@ -47,4 +48,20 @@
 
 .copy-btn:hover {
   color: #000;
+}
+
+.typing span {
+  width: 6px;
+  height: 6px;
+  margin-right: 4px;
+  background: #999;
+  border-radius: 50%;
+  display: inline-block;
+  animation: typing 1.4s infinite;
+}
+
+@keyframes typing {
+  0% { opacity: .2 }
+  20% { opacity: 1 }
+  100% { opacity: .2 }
 }

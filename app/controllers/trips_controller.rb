@@ -10,7 +10,12 @@ class TripsController < ApplicationController
   end
 
   def show
-    @trip = current_user.trips.find(params[:id])
+    @chat = current_user.chats.find(params[:id])
+    @message = Message.new
+
+    if @chat.messages.count == 1
+      MessagesController.new.send(:send_question)
+    end
   end
 
   def create
@@ -22,23 +27,13 @@ class TripsController < ApplicationController
         trip: @trip
       )
 
-      # Mensagem inicial Automatica
-      user_message = Message.create!(
+      Message.create!(
         chat: chat,
         role: "user",
         content: "Criando um roteiro resumido para visitar #{@trip.city}. #{@trip.content}"
       )
 
-      # chamada da IA
-      response = RubyLLM.chat
-                        .with_instructions("You are a travel assistant.")
-        .ask(user_message.content)
-
-      Message.create!(
-        chat: chat,
-        role: "assistant",
-        content: response.content
-      )
+      GenerateTripPlanJob.perform_later(chat.id)
 
       redirect_to chat_path(chat)
     else

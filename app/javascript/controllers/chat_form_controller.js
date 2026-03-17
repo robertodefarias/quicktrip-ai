@@ -10,13 +10,17 @@ export default class extends Controller {
   }
 
   prepareForSubmit() {
+    // espera o submit acontecer antes de limpar
+    setTimeout(() => {
+      this.inputTarget.value = ""
+    }, 0)
+
     this.inputTarget.placeholder = this.loadingPlaceholder
     this.inputTarget.readOnly = true
   }
 
   reset() {
     this.inputTarget.readOnly = false
-    this.inputTarget.value = ""
     this.inputTarget.placeholder = this.defaultPlaceholder
     this.inputTarget.focus()
   }

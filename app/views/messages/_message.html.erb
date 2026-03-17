@@ -1,26 +1,43 @@
-<% if message.role == "user" %>
+<div id="<%= dom_id(message) %>">
 
-  <div class="d-flex justify-content-end mb-3">
-    <div class="user-message shadow-sm d-inline-block">
-      <%= render_markdown(message.content )%>
+  <% if message.role == "user" %>
+
+    <div class="d-flex justify-content-end mb-3">
+      <div class="user-message shadow-sm d-inline-block">
+        <%= render_markdown(message.content) %>
+      </div>
     </div>
-  </div>
 
-<% else %>
+  <% else %>
 
-  <div class="d-flex justify-content-start mb-3">
-    <div class="ai-message shadow-sm d-inline-block">
-      <%= render_markdown(message.content ) %>
+    <div class="d-flex justify-content-start mb-3">
+      <div class="ai-message shadow-sm d-inline-block">
 
-      <button
-        data-controller="copy"
-        data-copy-text-value="<%= message.content %>"
-        data-action="click->copy#copy"
-        class="copy-btn">
-        📋 Copiar
-      </button>
+        <% if message.content.present? %>
 
+          <%= render_markdown(message.content) %>
+
+          <button
+            data-controller="copy"
+            data-copy-text-value="<%= message.content %>"
+            data-action="click->copy#copy"
+            class="copy-btn">
+            📋 Copiar
+          </button>
+
+        <% else %>
+
+          <div class="typing">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+        <% end %>
+
+      </div>
     </div>
-  </div>
 
-<% end %>
+  <% end %>
+
+</div>

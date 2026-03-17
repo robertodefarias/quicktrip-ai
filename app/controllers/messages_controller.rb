@@ -19,7 +19,7 @@ class MessagesController < ApplicationController
     Evite textos longos em bloco.
     Exemplo de resposta:
 
-    ## Roteiro de 1 dia – Paris
+    ## Roteiro de 1 dia - Paris
 
     ### Manhã
     - Torre Eiffel
@@ -29,47 +29,100 @@ class MessagesController < ApplicationController
     @chat = current_user.chats.find(params[:chat_id])
     @trip = @chat.trip
 
-    @message = Message.create!(
-      chat: @chat,
+    @message = @chat.messages.create!(
       role: "user",
       content: params[:message][:content]
     )
 
-    response = RubyLLM.chat
-      .with_instructions(instructions)
-      .ask(conversartion_history)
-
-    @ai_message = Message.create!(
-      chat: @chat,
+    @ai_message = @chat.messages.create!(
       role: "assistant",
-      content: response.content
+      content: ""
     )
 
-    respond_to do |format|
-      format.turbo_stream
-    end
-  end
+    # dispara o streaming depois
+    send_question
 
-  def conversartion_history
-    @chat.messages.last(10).map do |message|
-      {
-        role: message.role,
-        content: message.content
-      }
-    end
+    head :ok
   end
 
   private
 
-  def message_params
-    params.require(:message).permit(:content)
+  def send_question(model: "gpt-4o-mini", with: {})
+    ruby_llm_chat = RubyLLM.chat
+
+    ruby_llm_chat.with_instructions(instructions)
+
+    build_conversation_history(ruby_llm_chat)
+
+    buffer = ""
+    first_chunk = true
+
+    ruby_llm_chat.ask(@message.content, with: with) do |chunk|
+      next if chunk.content.blank?
+
+      # primeiro token aparece imediatamente
+      if first_chunk
+        @ai_message.content += chunk.content
+        broadcast_replace(@ai_message)
+        first_chunk = false
+        next
+      end
+
+      buffer += chunk.content
+
+      # envia a cada ~25 caracteres
+      if buffer.length > 10
+        @ai_message.content += buffer
+        buffer = ""
+
+        broadcast_replace(@ai_message)
+      end
+    end
+
+    # envia resto do buffer
+    unless buffer.empty?
+      @ai_message.content += buffer
+      broadcast_replace(@ai_message)
+    end
+
+    # salva no banco apenas uma vez
+    @ai_message.save!
   end
 
+
+  # monta o histórico da conversa
+  def build_conversation_history(chat_llm)
+    @chat.messages.last(8).each do |message|
+      next if message.content.blank?
+      next if message == @message
+      chat_llm.add_message(
+        role: message.role,
+        content: message.content
+      )
+    end
+  end
+
+
+  # envia atualização via ActionCable
+  def broadcast_replace(message)
+    Turbo::StreamsChannel.broadcast_replace_to(
+      @chat,
+      target: helpers.dom_id(message),
+      partial: "messages/message",
+      locals: { message: message }
+    )
+  end
+
+
+  # contexto da viagem
   def trip_context
     "The user is planning a trip to #{@trip.city}. #{@trip.content}"
   end
 
+
+  # instruções para o modelo
   def instructions
     [SYSTEM_PROMPT, trip_context].compact.join("\n\n")
   end
+
 end

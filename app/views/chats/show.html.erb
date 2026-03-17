@@ -6,8 +6,8 @@
     <%= render @chat.messages %>
   </div>
 
-  <turbo-frame id="new_message_container" class="mt-4">
+  <div id="new_message_container" class="mt-4">
     <%= render "messages/form", chat: @chat, message: @message %>
-  </turbo-frame>
+  </div>
 
 </div>

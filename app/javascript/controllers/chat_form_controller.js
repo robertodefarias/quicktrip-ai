@@ -10,13 +10,12 @@ export default class extends Controller {
   }
 
   prepareForSubmit() {
-    this.inputTarget.value = ""
     this.inputTarget.placeholder = this.loadingPlaceholder
-    this.inputTarget.disabled = true
+    this.inputTarget.readOnly = true
   }
 
   reset() {
-    this.inputTarget.disabled = false
+    this.inputTarget.readOnly = false
     this.inputTarget.value = ""
     this.inputTarget.placeholder = this.defaultPlaceholder
     this.inputTarget.focus()

@@ -3,7 +3,7 @@
 
 [![Ruby Version](https://img.shields.io/badge/ruby-3.2%2B-red.svg)](https://www.ruby-lang.org/)
 [![Rails Version](https://img.shields.io/badge/rails-7.0%2B-red.svg)](https://rubyonrails.org/)
-[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-lightgrey.svg)]()
+[![License](https://img.shields.io/badge/license-All%20Rights%20Reserved-lightgrey.svg)](LICENSE)
 
 AI-powered travel planner built with Ruby on Rails, featuring real-time chat, streaming responses, and asynchronous itinerary generation.
 

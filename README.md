@@ -185,4 +185,7 @@ Originally developed as part of a collaborative bootcamp project and later indep
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is protected under an "All Rights Reserved" license.
+
+The code is publicly available for viewing and portfolio purposes only.  
+No reuse, distribution, or modification is allowed without explicit permission.

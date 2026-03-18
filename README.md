@@ -1,4 +1,5 @@
 # ✈️ QuickTrip AI
+> 🚀 Real-time AI travel planning with streaming responses and asynchronous processing
 
 [![Ruby Version](https://img.shields.io/badge/ruby-3.2%2B-red.svg)](https://www.ruby-lang.org/)
 [![Rails Version](https://img.shields.io/badge/rails-7.0%2B-red.svg)](https://rubyonrails.org/)
@@ -127,7 +128,9 @@ rails db:create db:migrate
 # Run the server
 rails server
 ```
-The application will be available at `http://localhost:3000`
+The application will be available at:
+
+👉 http://localhost:3000
 
 ---
 
